@@ -4,6 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AlignmentSpan;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -85,10 +89,19 @@ public class PermissionExplanationDialog extends Dialog {
                 "用于提供更精准的广告推荐，您可以选择拒绝\n\n" +
                 "📱 设备信息权限\n" +
                 "用于广告统计和防作弊，保护您的使用体验\n\n" +
-                "我们承诺严格保护您的隐私，仅在必要时使用相关权限，不会收集与功能无关的信息。\n" +
-                "山东闪迪智能科技股份有限公司";
+                "我们承诺严格保护您的隐私，仅在必要时使用相关权限，不会收集与功能无关的信息。\n\n";
         
-        contentText.setText(content);
+        // 创建SpannableString来设置公司名称居中显示
+        String companyName = "山东闪迪智能科技股份有限公司\n© 2014-2025";
+        SpannableString spannableContent = new SpannableString(content + companyName);
+        
+        // 设置公司名称居中对齐
+        int companyStart = content.length();
+        int companyEnd = companyStart + companyName.length();
+        spannableContent.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), 
+                companyStart, companyEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        
+        contentText.setText(spannableContent);
         
         // 设置按钮点击事件
         confirmButton.setOnClickListener(new View.OnClickListener() {
