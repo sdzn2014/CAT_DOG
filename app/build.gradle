@@ -1,0 +1,184 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace "com.catdog2025"
+    compileSdkVersion 35
+    buildToolsVersion "35.0.0"
+
+    signingConfigs {
+        demo {
+            keyAlias 'csjdemmo'
+            keyPassword 'bytedancecsjdemo'
+            storeFile file('open_ad_sdk.keystore')
+            storePassword 'bytedancecsjdemo'
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.catdog2025"
+        minSdkVersion 24
+        targetSdkVersion 35
+        versionCode 1
+        versionName "1.0"
+
+        multiDexEnabled true
+
+        ndk {
+            abiFilters 'armeabi', 'arm64-v8a', 'armeabi-v7a'
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.demo
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.demo
+        }
+    }
+
+    // 添加资源链接选项，忽略资源链接错误
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+        // 添加以下配置替代androidResources
+        ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        noCompress 'webp'
+        additionalParameters "--warn-manifest-validation", "--no-version-vectors"
+    }
+    
+    // 添加dexOptions配置，忽略第三方库中的D8警告
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries true
+        additionalParameters = ['--no-warnings']
+    }
+    
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    ndkVersion "23.1.7779620"
+
+    // 只使用Java源代码
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java']
+        }
+    }
+    
+    // 解决重复类问题
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/armeabi/libc++_shared.so'
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+    }
+}
+
+// 移除Kotlin编译器配置
+// tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+//     kotlinOptions {
+//         jvmTarget = "1.8"
+//     }
+// }
+
+repositories {
+    flatDir {
+        dirs 'libs','./libs/adn','./libs/adn/mtg','./libs/adn/sigmob','./libs/adapter'
+    }
+    maven { url 'https://artifact.bytedance.com/repository/AwemeOpenSDK' }
+}
+
+dependencies {
+    // 使用单一的文件树引用，避免重复
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/adapter')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/adn')
+    implementation fileTree(include: ['*.jar'], dir: 'libs/mediation')
+    
+    // 单独引用AAR文件，避免重复
+    implementation(name: "Baidu_MobAds_SDK_v9.3905", ext: 'aar')
+    implementation(name: "GDTSDK.unionNormal.4.640.1510", ext: 'aar')
+    
+    // 使用AndroidX替代Support库 - 升级到支持SDK 35的版本
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.annotation:annotation:1.7.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+    implementation 'androidx.fragment:fragment:1.7.0'
+    implementation 'androidx.core:core:1.12.0'
+    
+    // 其他依赖
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    
+    // 添加缺失的依赖
+    implementation(name: "circleimageview-2.2.0", ext: 'aar')  // 使用本地CircleImageView AAR
+    implementation(name: "open_ad_sdk", ext: 'aar')  // 字节跳动广告SDK
+    implementation(name: "windAd-4.22.2", ext: 'aar')  // Sigmob SDK
+    implementation(name: "windAd-common-1.7.9", ext: 'aar')  // Sigmob common
+    implementation(name: "mediation_sigmob_adapter_4.22.2.1", ext: 'aar')  // Sigmob adapter
+    implementation(name: "unity-ads-4.3.0", ext: 'aar')  // Unity ads
+
+    implementation('com.google.android.gms:play-services-ads:22.6.0') {
+        exclude group: 'com.android.support'
+    }
+    
+    // 解决Glide冲突问题
+    configurations {
+        implementation.exclude group: 'com.github.bumptech.glide', module: 'glide'
+        implementation.exclude module: 'glide-3.6.0'
+    }
+
+    // 移除重复的依赖
+    implementation(name: "mbridge_chinasame_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_dycreator_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_interstitial_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_interstitialvideo_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_mbbanner_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_mbbid_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_mbjscommon_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_mbnative_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_mbnativeadvanced_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_mbsplash_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_nativeex_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_newinterstitial_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_playercommon_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_reward_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_videocommon_16.6.57", ext: 'aar')
+    implementation(name: "mbridge_videojs_16.6.57", ext: 'aar')
+    implementation(name: "mediation_admob_adapter_17.2.0.67", ext: 'aar')
+    implementation(name: "mediation_baidu_adapter_9.3905.2", ext: 'aar')
+    implementation(name: "mediation_gdt_adapter_4.640.1510.1", ext: 'aar')
+    implementation(name: "mediation_mintegral_adapter_16.6.57.10", ext: 'aar')
+    implementation(name: "mediation_unity_adapter_4.3.0.34", ext: 'aar')
+
+    implementation(name: 'LayoutManagerGroup', ext: 'aar')
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+    implementation "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4"
+    implementation "com.google.code.gson:gson:2.8.5"
+    implementation "com.bytedance.ies.ugc.aweme:opensdk-china-external:0.1.8.0"
+    implementation "com.bytedance.ies.ugc.aweme:opensdk-common:0.1.8.0"
+
+    //测试工具
+    implementation(name: 'tools-release', ext: 'aar')
+}

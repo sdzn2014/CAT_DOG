@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "app_id": "5713518",
+  "description": "CATDOG2025本地广告配置文件 - 用于网络异常时的广告兜底",
+  "last_update": "2025-01-11",
+  "ad_slots": {
+    "splash": {
+      "media_id": "103540236",
+      "name": "开屏广告",
+      "type": "splash",
+      "orientation": "vertical",
+      "size": {
+        "width": 720,
+        "height": 1280
+      },
+      "timeout": 6000,
+      "fallback_enabled": true,
+      "fallback_code_id": "103540236_fallback"
+    },
+    "reward_video": {
+      "media_id": "103540351",
+      "name": "激励视频广告",
+      "type": "reward_video",
+      "orientation": "vertical",
+      "reward_name": "解锁宠物沟通功能",
+      "reward_amount": 1,
+      "fallback_enabled": true
+    },
+    "cat_banner": {
+      "media_id": "103539146",
+      "name": "Cat页面Banner广告",
+      "type": "banner",
+      "size": {
+        "width": 320,
+        "height": 150
+      },
+      "fallback_enabled": true
+    },
+    "dog_banner": {
+      "media_id": "103539680",
+      "name": "Dog页面Banner广告", 
+      "type": "banner",
+      "size": {
+        "width": 320,
+        "height": 150
+      },
+      "fallback_enabled": true
+    }
+  },
+  "waterfall_config": {
+    "retry_count": 3,
+    "timeout_per_request": 5000,
+    "enable_parallel_request": true
+  },
+  "fallback_strategy": {
+    "enable_local_fallback": true,
+    "splash_fallback_timeout": 6000,
+    "banner_fallback_timeout": 3000,
+    "reward_fallback_timeout": 5000
+  }
+} 

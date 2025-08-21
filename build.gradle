@@ -1,0 +1,55 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        // 使用多个国内镜像，按顺序尝试
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        
+        //mintegral sdk依赖   引入mintegral sdk需要添加此maven
+        maven {
+            url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_support/"
+        }
+        maven {
+            url "https://artifact.bytedance.com/repository/pangle"
+        }
+        
+        // 备用仓库
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.12.0'
+    }
+}
+
+allprojects {
+    repositories {
+        // 使用多个国内镜像，按顺序尝试
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public/' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        
+        //mintegral sdk依赖   引入mintegral sdk需要添加此maven
+        maven {
+            url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_support/"
+        }
+        maven {
+            url "https://artifact.bytedance.com/repository/pangle"
+        }
+        
+        // 备用仓库
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

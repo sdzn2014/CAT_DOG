@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    
+    <!-- 圆形背景 -->
+    <path
+        android:fillColor="#9b59b6"
+        android:pathData="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2Z" />
+    
+    <!-- i 的点 -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M12,6.3C11.34,6.3 10.8,6.84 10.8,7.5C10.8,8.16 11.34,8.7 12,8.7C12.66,8.7 13.2,8.16 13.2,7.5C13.2,6.84 12.66,6.3 12,6.3Z" />
+    
+    <!-- i 的竖线 -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M10.5,10.5H13.5V18H10.5V10.5Z" />
+    
+    <!-- 底部装饰线 -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M9.5,18H14.5V19H9.5V18Z" />
+    
+</vector> 

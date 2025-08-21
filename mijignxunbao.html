@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>谜境寻宝 - 基于地理位置的增强现实寻宝游戏</title>
+    <meta name="description" content="谜境寻宝是一款创新的Android寻宝游戏应用，结合GPS定位和虚拟宝藏探索，让您在现实世界中体验寻宝的乐趣。">
+    <meta name="keywords" content="寻宝游戏,Android应用,GPS定位,增强现实,解谜游戏,宝藏探索">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* 主要内容 */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        /* 英雄区域 */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* 功能特色 */
+        .features {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* 操作指南 */
+        .guide {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+        }
+
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .step p {
+            color: #666;
+        }
+
+        /* 下载区域 */
+        .download {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 4rem 0;
+            color: white;
+            text-align: center;
+        }
+
+        .download-info {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .download-info h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-info p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .download-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* 隐私政策 */
+        .privacy-policy {
+            background: #f8f9fa;
+            padding: 4rem 0;
+        }
+        
+        .privacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .privacy-content h3 {
+            color: #333;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.3em;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+        
+        .privacy-content h4 {
+            color: #555;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1em;
+        }
+        
+        .privacy-content p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+        
+        .privacy-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+        
+        .privacy-content li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .privacy-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+        }
+        
+        .privacy-content table th,
+        .privacy-content table td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .privacy-content table th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .privacy-content table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .update-date {
+            text-align: right;
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 1.5rem;
+        }
+        
+        .important {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .highlight {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info {
+            background: #f0f8ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .contact-info-privacy {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-info-privacy h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+
+        /* 联系信息 */
+        .contact {
+            background: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-item {
+            padding: 1.5rem;
+        }
+
+        .contact-item h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item p {
+            color: #666;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">🏴‍☠️ 谜境寻宝</a>
+                <ul class="nav-links">
+                    <li><a href="#features">功能特色</a></li>
+                    <li><a href="#guide">使用方法</a></li>
+                    <li><a href="#download">下载</a></li>
+                    <li><a href="#privacy">隐私政策</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <div class="main-content">
+        <!-- 英雄区域 -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="fade-in-up">谜境寻宝</h1>
+                <p class="fade-in-up">基于地理位置的增强现实寻宝游戏</p>
+                <p class="fade-in-up">在现实世界中探索虚拟宝藏，体验前所未有的寻宝冒险！</p>
+                <div class="cta-buttons fade-in-up">
+                    <a href="#download" class="btn btn-primary">立即下载</a>
+                    <a href="#features" class="btn btn-secondary">了解更多</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能特色 -->
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">功能特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">🗺️</div>
+                        <h3>智能地图系统</h3>
+                        <p>集成高德地图，实时显示用户位置和宝藏分布，支持多种导航应用，让寻宝更加便捷。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">🧩</div>
+                        <h3>解谜挑战</h3>
+                        <p>发现宝藏后需要完成解谜任务才能获得奖励，增加游戏趣味性和挑战性。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">🏆</div>
+                        <h3>成就系统</h3>
+                        <p>丰富的成就系统，记录您的寻宝历程，解锁各种徽章和奖励。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">📊</div>
+                        <h3>排行榜</h3>
+                        <p>与全球玩家竞争，查看排行榜，展示您的寻宝实力。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">🎁</div>
+                        <h3>积分兑换</h3>
+                        <p>通过寻宝获得积分，兑换精美礼品，让游戏更有价值。</p>
+                    </div>
+                    <div class="feature-card fade-in-up">
+                        <div class="feature-icon">💰</div>
+                        <h3>微信支付</h3>
+                        <p>支持微信支付，购买解谜答案和高级导航功能，提升游戏体验。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 操作指南 -->
+        <section id="guide" class="guide">
+            <div class="container">
+                <h2 class="section-title">操作指南</h2>
+                <div class="guide-steps">
+                    <div class="step fade-in-up">
+                        <div class="step-number">1</div>
+                        <h3>下载安装</h3>
+                        <p>下载并安装谜境寻宝应用，授予位置权限以开始您的寻宝之旅。</p>
+                    </div>
+                    <div class="step fade-in-up">
+                        <div class="step-number">2</div>
+                        <h3>探索地图</h3>
+                        <p>打开地图界面，查看附近的宝藏位置，系统会自动生成每日宝藏。</p>
+                    </div>
+                    <div class="step fade-in-up">
+                        <div class="step-number">3</div>
+                        <h3>发现宝藏</h3>
+                        <p>接近宝藏3米范围内时，系统会自动发现宝藏并提示您开始解谜。</p>
+                    </div>
+                    <div class="step fade-in-up">
+                        <div class="step-number">4</div>
+                        <h3>完成解谜</h3>
+                        <p>根据提示完成解谜任务，获得积分奖励，解锁成就。</p>
+                    </div>
+                    <div class="step fade-in-up">
+                        <div class="step-number">5</div>
+                        <h3>兑换奖励</h3>
+                        <p>使用积分兑换精美礼品，或购买高级功能提升游戏体验。</p>
+                    </div>
+                    <div class="step fade-in-up">
+                        <div class="step-number">6</div>
+                        <h3>分享成果</h3>
+                        <p>查看排行榜，与好友分享您的寻宝成果，展示您的成就。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 下载区域 -->
+        <section id="download" class="download">
+            <div class="container">
+                <div class="download-info">
+                    <h2>立即开始您的寻宝冒险</h2>
+                    <p>加入全球寻宝者社区，体验前所未有的地理定位游戏</p>
+                    
+                    <div class="download-stats">
+                        <div class="stat">
+                            <div class="stat-number">10+</div>
+                            <div class="stat-label">宝藏类型</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">解谜挑战</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">成就徽章</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">在线服务</div>
+                        </div>
+                    </div>
+
+                    <div class="cta-buttons">
+                        <a href="app-debug.apk" class="btn btn-primary" download>下载Android版本</a>
+                        <a href="#contact" class="btn btn-secondary">获取技术支持</a>
+                    </div>
+
+                    <div style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+                        <p>系统要求：Android 7.0 (API 24) 或更高版本</p>
+                        <p>支持设备：智能手机、平板电脑</p>
+                        <p>网络要求：需要GPS定位和网络连接</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 隐私政策 -->
+        <section id="privacy" class="privacy-policy">
+            <div class="container">
+                <h2 class="section-title">隐私政策</h2>
+                <div class="privacy-content">
+                    <div class="update-date">最后更新时间：2025年8月</div>
+                    
+                    <div class="important">
+                        <strong>重要提示：</strong>我们非常重视您的隐私保护。本隐私政策详细说明了我们如何收集、使用、存储和保护您的个人信息。请仔细阅读本政策。
+                    </div>
+                    
+                    <h3>1. 信息收集</h3>
+                    <p>为了提供更好的服务体验，我们可能会收集以下类型的信息：</p>
+                    
+                    <h4>1.1 个人身份信息</h4>
+                    <ul>
+                        <li><strong>微信登录信息：</strong>微信昵称、头像、OpenID</li>
+                        <li><strong>设备信息：</strong>设备型号、操作系统版本、设备标识符</li>
+                        <li><strong>应用信息：</strong>应用版本、使用时长、功能使用情况</li>
+                    </ul>
+                    
+                    <h4>1.2 位置信息</h4>
+                    <div class="highlight">
+                        <p><strong>GPS定位数据：</strong>为了提供基于位置的寻宝游戏体验，我们需要获取您的精确位置信息。您可以随时在设备设置中关闭位置权限。</p>
+                    </div>
+                    
+                    <h4>1.3 使用数据</h4>
+                    <ul>
+                        <li>游戏进度和成就数据</li>
+                        <li>应用使用统计信息</li>
+                        <li>错误日志和崩溃报告</li>
+                        <li>用户反馈和评价</li>
+                    </ul>
+                    
+                    <h3>2. 信息使用</h3>
+                    <p>我们收集的信息将用于以下目的：</p>
+                    
+                    <table>
+                        <tr>
+                            <th>使用目的</th>
+                            <th>涉及信息类型</th>
+                            <th>法律依据</th>
+                        </tr>
+                        <tr>
+                            <td>提供游戏服务</td>
+                            <td>个人身份信息、位置信息、使用数据</td>
+                            <td>合同履行</td>
+                        </tr>
+                        <tr>
+                            <td>改进产品功能</td>
+                            <td>使用数据、错误日志</td>
+                            <td>合法利益</td>
+                        </tr>
+                        <tr>
+                            <td>客户服务</td>
+                            <td>个人身份信息、反馈信息</td>
+                            <td>合同履行</td>
+                        </tr>
+                        <tr>
+                            <td>安全保护</td>
+                            <td>设备信息、使用数据</td>
+                            <td>合法利益</td>
+                        </tr>
+                    </table>
+                    
+                    <h3>3. 信息共享</h3>
+                    <div class="info">
+                        <p><strong>我们承诺：</strong>除以下情况外，我们不会向第三方出售、出租或以其他方式披露您的个人信息。</p>
+                    </div>
+                    
+                    <h4>3.1 授权共享</h4>
+                    <ul>
+                        <li><strong>微信平台：</strong>基于微信登录和分享功能的必要信息交换</li>
+                        <li><strong>地图服务：</strong>为提供位置服务而与地图服务提供商共享位置信息</li>
+                        <li><strong>支付服务：</strong>处理游戏内购买时与支付平台共享必要信息</li>
+                    </ul>
+                    
+                    <h4>3.2 法律要求</h4>
+                    <p>在以下情况下，我们可能会披露您的信息：</p>
+                    <ul>
+                        <li>遵守法律法规、法院命令或政府要求</li>
+                        <li>保护我们的权利、财产或安全</li>
+                        <li>防止欺诈或安全威胁</li>
+                        <li>保护用户或公众的合法权益</li>
+                    </ul>
+                    
+                    <h3>4. 信息存储</h3>
+                    <h4>4.1 存储位置</h4>
+                    <p>您的个人信息主要存储在中国境内的服务器上。如需跨境传输，我们将严格遵守相关法律法规。</p>
+                    
+                    <h4>4.2 存储期限</h4>
+                    <ul>
+                        <li><strong>账户信息：</strong>账户存续期间及注销后30天</li>
+                        <li><strong>游戏数据：</strong>账户存续期间</li>
+                        <li><strong>日志信息：</strong>最长保存12个月</li>
+                        <li><strong>位置信息：</strong>实时使用，不做长期存储</li>
+                    </ul>
+                    
+                    <h3>5. 信息安全</h3>
+                    <p>我们采取多种安全措施保护您的个人信息：</p>
+                    
+                    <div class="highlight">
+                        <ul>
+                            <li><strong>技术措施：</strong>数据加密、访问控制、安全传输协议</li>
+                            <li><strong>管理措施：</strong>员工培训、权限管理、安全审计</li>
+                            <li><strong>物理措施：</strong>数据中心安全、设备保护</li>
+                            <li><strong>应急响应：</strong>安全事件监控和响应机制</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>6. 您的权利</h3>
+                    <p>根据相关法律法规，您享有以下权利：</p>
+                    
+                    <h4>6.1 访问权</h4>
+                    <p>您有权了解我们收集、使用您个人信息的情况，并可以通过应用内设置查看您的个人信息。</p>
+                    
+                    <h4>6.2 更正权</h4>
+                    <p>如果您发现个人信息有误，可以通过应用内设置或联系客服进行更正。</p>
+                    
+                    <h4>6.3 删除权</h4>
+                    <p>在特定情况下，您可以要求我们删除您的个人信息：</p>
+                    <ul>
+                        <li>信息收集、使用违反法律法规</li>
+                        <li>信息收集、使用违反我们的承诺</li>
+                        <li>您撤回同意且没有其他法律依据</li>
+                        <li>您注销账户</li>
+                    </ul>
+                    
+                    <h4>6.4 撤回同意</h4>
+                    <p>您可以随时撤回对特定信息处理的同意，但这可能影响相关功能的使用。</p>
+                    
+                    <h3>7. 未成年人保护</h3>
+                    <div class="important">
+                        <p><strong>特别提示：</strong>我们非常重视未成年人的隐私保护。如果您是未成年人，请在监护人指导下使用本应用。</p>
+                    </div>
+                    
+                    <ul>
+                        <li>未成年人使用本应用需获得监护人同意</li>
+                        <li>我们不会故意收集未满13岁儿童的个人信息</li>
+                        <li>如发现收集了儿童信息，我们将立即删除</li>
+                        <li>监护人可以联系我们查看、更正或删除儿童信息</li>
+                    </ul>
+                    
+                    <h3>8. 政策更新</h3>
+                    <p>我们可能会不定期更新本隐私政策。重大变更将通过以下方式通知您：</p>
+                    <ul>
+                        <li>应用内弹窗通知</li>
+                        <li>应用启动页面提示</li>
+                        <li>官方网站公告</li>
+                        <li>电子邮件通知（如有）</li>
+                    </ul>
+                    
+                    <h3>9. 适用法律</h3>
+                    <p>本隐私政策的解释和执行适用中华人民共和国法律。如有争议，提交有管辖权的人民法院解决。</p>
+                    
+                    <div class="contact-info-privacy">
+                        <h3>联系我们</h3>
+                        <p>如果您对本隐私政策有任何疑问、意见或建议，或需要行使您的权利，请通过以下方式联系我们：</p>
+                        <p><strong>隐私保护专员邮箱：</strong> SDZN2014@163.COM</p>
+                        <p><strong>官方网站：</strong> www.sdzn.vip</p>
+                        <p><strong>通信地址：</strong> 邹城市西外环路1888号</p>
+                        <p><strong>工作时间：</strong> 周一至周五 9:00-18:00</p>
+                        
+                        <div class="highlight">
+                            <p><strong>承诺：</strong>我们将在收到您的请求后15个工作日内给予回复。对于复杂请求，我们可能需要更长时间，但不超过30个工作日。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系信息 -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">联系我们</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h3>技术支持</h3>
+                        <p>如果您在使用过程中遇到任何问题，请通过以下方式联系我们：</p>
+                        <p>邮箱：SDZN2014@163.COM</p>
+                        <p>网站：www.sdzn.vip</p>
+                        <p>微信：mijingxunbao_support</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>商务合作</h3>
+                        <p>如果您对商务合作感兴趣，请联系我们：</p>
+                        <p>邮箱：SDZN2014@163.COM</p>
+                        <p>网站：www.sdzn.vip</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>用户反馈</h3>
+                        <p>我们重视每一位用户的反馈和建议：</p>
+                        <p>邮箱：SDZN2014@163.COM</p>
+                        <p>网站：www.sdzn.vip</p>
+                        <p>应用内反馈：设置 → 意见反馈</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 谜境寻宝. 保留所有权利.</p>
+            <p>本应用使用高德地图服务，支持微信支付功能</p>
+            <p style="margin-top: 1rem;">
+                <a href="app/src/main/assets/privacy_policy.html" style="color: #ccc; text-decoration: none; margin-right: 2rem;">隐私政策</a>
+                <a href="app/src/main/assets/terms_of_service.html" style="color: #ccc; text-decoration: none;">服务条款</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.fade-in-up').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>

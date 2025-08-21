@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <!-- 主要内容区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/iv_cat"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:background="@drawable/rounded_image_background"
+            android:contentDescription="Cat图片"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true" />
+
+        <FrameLayout
+            android:id="@+id/cat_banner_container"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:background="@color/default_window_bg" />
+
+        <ImageView
+            android:id="@+id/iv_dog"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:background="@drawable/rounded_image_background"
+            android:contentDescription="Dog图片"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true" />
+
+        <FrameLayout
+            android:id="@+id/dog_banner_container"
+            android:layout_width="320dp"
+            android:layout_height="50dp"
+            android:background="@color/default_window_bg" />
+
+    </LinearLayout>
+
+    <!-- 设置按钮 -->
+    <ImageView
+        android:id="@+id/btn_settings"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_lock_setting"
+        android:background="@drawable/btn_play_background"
+        android:padding="12dp"
+        android:contentDescription="@string/settings_title"
+                 android:elevation="4dp" />
+
+</FrameLayout>

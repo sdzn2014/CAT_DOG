@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    
+    <!-- 盾牌背景 -->
+    <path
+        android:fillColor="#3498db"
+        android:pathData="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z" />
+    
+    <!-- 盾牌边框 -->
+    <path
+        android:strokeColor="#2980b9"
+        android:strokeWidth="0.5"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1Z" />
+    
+    <!-- 锁的主体 -->
+    <path
+        android:fillColor="#ffffff"
+        android:pathData="M12,7C10.9,7 10,7.9 10,9V10H9V16H15V10H14V9C14,7.9 13.1,7 12,7ZM12,8C12.6,8 13,8.4 13,9V10H11V9C11,8.4 11.4,8 12,8Z" />
+    
+    <!-- 锁孔 -->
+    <path
+        android:fillColor="#3498db"
+        android:pathData="M12,12C11.4,12 11,12.4 11,13C11,13.6 11.4,14 12,14C12.6,14 13,13.6 13,13C13,12.4 12.6,12 12,12Z" />
+    
+</vector> 

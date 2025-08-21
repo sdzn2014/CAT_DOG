@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffff</color>
+    <color name="default_window_bg">#ffffff</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#FB0010</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="common_white">#FFFFFF</color>
+    <color name="common_half_alpha">#55000000</color>
+    <color name="title">#B22222</color>
+    <color name="tt_trans_half_black">#FF1A1A1A</color>
+
+    <color name="demo_draw_btn_back">#D33F57</color>
+    <color name="demo_white">#ffffff</color>
+    
+    <!-- 美化用色彩 -->
+    <color name="gradient_start">#667eea</color>
+    <color name="gradient_end">#764ba2</color>
+    <color name="cat_card_bg">#FFF5E6</color>
+    <color name="dog_card_bg">#E6F3FF</color>
+    <color name="card_shadow">#26000000</color>
+    <color name="text_primary">#2C3E50</color>
+    <color name="text_secondary">#7F8C8D</color>
+    <color name="accent_orange">#FF6B35</color>
+    <color name="accent_blue">#4A90E2</color>
+</resources>

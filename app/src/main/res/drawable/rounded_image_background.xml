@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 圆角半径设置为20dp，适合ImageView的圆角效果 -->
+    <corners android:radius="20dp" />
+    <!-- 透明背景，不影响ImageView的图片显示 -->
+    <solid android:color="@android:color/transparent" />
+</shape>
