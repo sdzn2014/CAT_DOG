@@ -66,8 +66,13 @@ public class CatDogActivity extends Activity {
         // 初始化视图
         initViews();
         
-        // 检查和申请必要权限
-        checkAndRequestPermissions();
+        // 移除启动时的权限申请，改为按需申请
+        // checkAndRequestPermissions();
+        
+        // 直接初始化广告
+        initAdListeners();
+        loadCatBannerAd();
+        loadDogBannerAd();
         
         Log.d(TAG, "onCreate: CatDogActivity初始化完成");
         

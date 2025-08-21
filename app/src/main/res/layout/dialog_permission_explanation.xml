@@ -89,7 +89,7 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-                android:text="同意并继续"
+                android:text="同意并开始使用"
                 android:textSize="16sp"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"

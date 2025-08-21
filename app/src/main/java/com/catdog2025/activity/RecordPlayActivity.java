@@ -71,8 +71,8 @@ public class RecordPlayActivity extends Activity {
         // 初始化视图
         initViews();
         
-        // 检查录音权限
-        checkPermissions();
+        // 移除启动时的权限检查，改为点击录音按钮时按需申请
+        // checkPermissions();
         
         // 初始化音频文件路径
         initAudioPath();
