@@ -11,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
-
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
@@ -25,7 +24,6 @@ import com.catdog2025.utils.PermissionManager;
 import com.catdog2025.utils.PermissionDialogHelper;
 import androidx.annotation.NonNull;
 import android.Manifest;
-
 import java.util.List;
 
 /**

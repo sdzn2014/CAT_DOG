@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
-
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdManager;
@@ -14,7 +13,6 @@ import com.bytedance.sdk.openadsdk.TTCustomController;
 import com.bytedance.sdk.openadsdk.mediation.init.MediationConfigUserInfoForSegment;
 import com.bytedance.sdk.openadsdk.mediation.init.MediationPrivacyConfig;
 import com.catdog2025.mediation.java.MediationSplashActivity;
-import com.catdog2025.R;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,13 +1,9 @@
 package com.catdog2025.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-
-import android.view.View;
-
 import com.catdog2025.R;
 
 /**

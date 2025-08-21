@@ -3,7 +3,6 @@ package com.catdog2025.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -17,14 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.catdog2025.R;
 import com.catdog2025.utils.PermissionManager;
 import com.catdog2025.utils.PermissionDialogHelper;
-import android.Manifest;
-
 import java.io.File;
 import java.io.IOException;
 

@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.catdog2025.R;
 import com.catdog2025.config.TTAdManagerHolder;

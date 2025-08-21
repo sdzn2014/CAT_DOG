@@ -45,26 +45,14 @@ android {
     }
 
     // 添加资源链接选项，忽略资源链接错误
-    aaptOptions {
-        cruncherEnabled = false
-        useNewCruncher = false
-        // 添加以下配置替代androidResources
-        ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
-        noCompress 'webp'
-        additionalParameters "--warn-manifest-validation", "--no-version-vectors"
-    }
-    
+
     // 添加dexOptions配置，忽略第三方库中的D8警告
     dexOptions {
         javaMaxHeapSize "4g"
         preDexLibraries true
         additionalParameters = ['--no-warnings']
     }
-    
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -77,16 +65,24 @@ android {
             java.srcDirs = ['src/main/java']
         }
     }
-    
-    // 解决重复类问题
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
-        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-        pickFirst 'lib/arm64-v8a/libc++_shared.so'
-        pickFirst 'lib/armeabi/libc++_shared.so'
-        pickFirst 'lib/x86/libc++_shared.so'
-        pickFirst 'lib/x86_64/libc++_shared.so'
+        jniLibs {
+            pickFirsts += ['lib/armeabi-v7a/libc++_shared.so', 'lib/arm64-v8a/libc++_shared.so', 'lib/armeabi/libc++_shared.so', 'lib/x86/libc++_shared.so', 'lib/x86_64/libc++_shared.so']
+        }
+        resources {
+            excludes += ['META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
+        }
+    }
+
+    // 解决重复类问题
+    androidResources {
+        ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        noCompress 'webp'
+        additionalParameters '--warn-manifest-validation', '--no-version-vectors'
+    }
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
     }
 }
 
