@@ -37,6 +37,11 @@ public class PermissionExplanationDialog extends Dialog {
         void onConfirm();
         
         /**
+         * 用户点击拒绝按钮
+         */
+        void onReject();
+        
+        /**
          * 用户点击"查看详细隐私政策"按钮
          */
         void onViewPrivacyPolicy();
@@ -71,7 +76,8 @@ public class PermissionExplanationDialog extends Dialog {
     private void initViews() {
         TextView titleText = findViewById(R.id.tv_dialog_title);
         TextView contentText = findViewById(R.id.tv_dialog_content);
-        Button confirmButton = findViewById(R.id.btn_confirm);
+        Button agreeButton = findViewById(R.id.btn_agree);
+        Button rejectButton = findViewById(R.id.btn_reject);
         Button privacyButton = findViewById(R.id.btn_privacy_policy);
         
         // 设置标题
@@ -104,12 +110,22 @@ public class PermissionExplanationDialog extends Dialog {
         contentText.setText(spannableContent);
         
         // 设置按钮点击事件
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        agreeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
                 if (mListener != null) {
                     mListener.onConfirm();
+                }
+            }
+        });
+        
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                if (mListener != null) {
+                    mListener.onReject();
                 }
             }
         });

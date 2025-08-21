@@ -49,11 +49,18 @@ public class StartActivity extends Activity {
         dialog.setOnDialogActionListener(new PermissionExplanationDialog.OnDialogActionListener() {
             @Override
             public void onConfirm() {
-                Log.d(TAG, "用户确认权限说明，标记非首次启动并继续初始化SDK");
+                Log.d(TAG, "用户同意权限说明，标记非首次启动并继续初始化SDK");
                 // 标记已经不是首次启动
                 PermissionExplanationDialog.markNotFirstLaunch(StartActivity.this);
                 // 继续SDK初始化流程
                 initializeAndStartSDK();
+            }
+            
+            @Override
+            public void onReject() {
+                Log.d(TAG, "用户拒绝权限说明，退出应用");
+                // 用户拒绝，退出应用
+                finish();
             }
             
             @Override
