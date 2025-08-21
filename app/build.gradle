@@ -53,10 +53,6 @@ android {
         additionalParameters = ['--no-warnings']
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     ndkVersion "23.1.7779620"
 
     // 只使用Java源代码
@@ -83,6 +79,19 @@ android {
     lint {
         abortOnError false
         checkReleaseBuilds false
+    }
+    
+    // 添加编译选项来处理第三方SDK兼容性问题
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        incremental false
+    }
+    
+    // 添加dex选项来处理D8警告
+    dexOptions {
+        jumboMode true
+        keepRuntimeAnnotatedClasses false
     }
 }
 

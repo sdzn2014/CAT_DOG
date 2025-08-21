@@ -13,7 +13,6 @@ import com.bytedance.sdk.openadsdk.TTCustomController;
 import com.bytedance.sdk.openadsdk.mediation.init.MediationConfigUserInfoForSegment;
 import com.bytedance.sdk.openadsdk.mediation.init.MediationPrivacyConfig;
 import com.catdog2025.mediation.java.MediationSplashActivity;
-
 import java.util.HashMap;
 import java.util.Map;
 
